@@ -1,0 +1,90 @@
+﻿<UserControl x:Class="Wireboard.UserControls.GeneralSettingsControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:p="clr-namespace:Wireboard.Properties"
+             xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:local="clr-namespace:Wireboard.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="500" IsVisibleChanged="UserControl_IsVisibleChanged">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Orientation="Vertical" Margin="5">
+            <CheckBox Content="Connect on program start" IsChecked="{Binding Source={x:Static p:Settings.Default}, Path=ConnectOnStart, Mode=TwoWay}" />
+            <CheckBox Content="Try reconnecting on disconnect" Margin="0,5,0,0" IsChecked="{Binding Source={x:Static p:Settings.Default}, Path=Reconnect, Mode=TwoWay}" />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock Text="Download directory:" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center"  Margin="0,5,10,0" />
+                <Grid Grid.Column="1" Grid.Row="0" Margin="0,5,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBox x:Name="tbDirectory" Grid.Column="0" Grid.Row="0" MinWidth="80" Margin="0" Text="{Binding Source={x:Static p:Settings.Default}, Path=PrefDownloadDir, Mode=TwoWay, NotifyOnSourceUpdated=True}" VerticalAlignment="Center" TextChanged="TextBox_TextChanged" controls:TextBoxHelper.AutoWatermark="True" SourceUpdated="TbDirectory_SourceUpdated"/>
+                    <Button Grid.Row="0" Grid.Column="1" BorderThickness="1" HorizontalAlignment="Right" Margin="0" VerticalAlignment="Top" Width="Auto" Height="{Binding ElementName=tbDirectory, Path=ActualHeight}" Style="{DynamicResource SquareButtonStyle}" HorizontalContentAlignment="Stretch" Click="ButtonBrowse_Click">
+                        <TextBlock Grid.Column="1" Margin="5,0" VerticalAlignment="Center" Text="Browse..." HorizontalAlignment="Center" />
+                    </Button>
+                </Grid>
+                <TextBlock Grid.Column="0" Grid.Row="1" Text="Screen Lock:" Margin="0,5,10,0" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                <ComboBox Grid.Column="1" Grid.Row="1" x:Name="cbMethodSelect" SelectedValuePath="Tag" Width="110" SelectedValue="{Binding Source={x:Static p:Settings.Default}, Path=ScreenlockBright}" HorizontalAlignment="Right" Margin="0,5,0,0">
+                    <ComboBoxItem>
+                        <ComboBoxItem.Tag>
+                            <sys:Boolean>True</sys:Boolean>
+                        </ComboBoxItem.Tag>
+                        Bright
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <ComboBoxItem.Tag>
+                            <sys:Boolean>False</sys:Boolean>
+                        </ComboBoxItem.Tag>
+                        Dim
+                    </ComboBoxItem>
+                </ComboBox>
+                <TextBlock Grid.Column="0" Grid.Row="2" Text="Shared Clipboard:" Margin="0,5,10,0" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                <ComboBox Grid.Column="1" Grid.Row="2" x:Name="cbClipboardSelect" SelectedValuePath="Tag" Width="110" SelectedValue="{Binding Source={x:Static p:Settings.Default}, Path=SharedClipboard}" HorizontalAlignment="Right" Margin="0,5,0,0">
+                    <ComboBoxItem>
+                        <ComboBoxItem.Tag>
+                            <sys:Int32>0</sys:Int32>
+                        </ComboBoxItem.Tag>
+                        Disabled
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <ComboBoxItem.Tag>
+                            <sys:Int32>1</sys:Int32>
+                        </ComboBoxItem.Tag>
+                        Bidirectional
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <ComboBoxItem.Tag>
+                            <sys:Int32>2</sys:Int32>
+                        </ComboBoxItem.Tag>
+                        Share Remote
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <ComboBoxItem.Tag>
+                            <sys:Int32>3</sys:Int32>
+                        </ComboBoxItem.Tag>
+                        Share Local
+                    </ComboBoxItem>
+                </ComboBox>
+            </Grid>
+            <StackPanel Orientation="Horizontal" Margin="0,10,0,0" HorizontalAlignment="Left">
+                <Button Grid.Row="0" Grid.Column="1" BorderThickness="1" HorizontalAlignment="Right" Margin="0" VerticalAlignment="Top" Width="Auto" Style="{DynamicResource SquareButtonStyle}" HorizontalContentAlignment="Stretch" Click="ButtonOpenLog_Click">
+                    <TextBlock Grid.Column="1" Margin="5,0" VerticalAlignment="Center" Text="Open Log" HorizontalAlignment="Center" />
+                </Button>
+                <Button Grid.Row="0" Grid.Column="1" BorderThickness="1" HorizontalAlignment="Right" Margin="5,0,0,0" VerticalAlignment="Top" Width="Auto" Style="{DynamicResource SquareButtonStyle}" HorizontalContentAlignment="Stretch" Click="ButtonClearPws_Click">
+                    <TextBlock Grid.Column="1" Margin="5,0" VerticalAlignment="Center" Text="Clear Stored Passwords" HorizontalAlignment="Center" />
+                </Button>
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

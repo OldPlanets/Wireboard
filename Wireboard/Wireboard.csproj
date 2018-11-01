@@ -1,0 +1,301 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Costura.Fody.3.1.6\build\Costura.Fody.props" Condition="Exists('..\packages\Costura.Fody.3.1.6\build\Costura.Fody.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D6C424BA-3236-40D6-96CC-DAC47FF8121D}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>Wireboard</RootNamespace>
+    <AssemblyName>Wireboard</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>wireboard.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.1.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
+      <HintPath>..\packages\BouncyCastle.1.8.1\lib\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
+    <Reference Include="Costura, Version=3.1.6.0, Culture=neutral, PublicKeyToken=9919ef960d84173d, processorArchitecture=MSIL">
+      <HintPath>..\packages\Costura.Fody.3.1.6\lib\net46\Costura.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro, Version=1.5.0.23, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.1.5.0\lib\net45\MahApps.Metro.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Threading.Tasks.Dataflow, Version=4.5.24.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Tpl.Dataflow.4.5.24\lib\portable-net45+win8+wpa81\System.Threading.Tasks.Dataflow.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.1.5.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="AdbWrapper.cs" />
+    <Compile Include="AppIconManager.cs" />
+    <Compile Include="BbBatteryStatus.cs" />
+    <Compile Include="BbEventArgs\BatteryStatusEventArgs.cs" />
+    <Compile Include="BbEventArgs\ClipboardChangedEventArgs.cs" />
+    <Compile Include="BbEventArgs\DiscoveryFinishedEventArgs.cs" />
+    <Compile Include="BbEventArgs\ReceiveFileEventArgs.cs" />
+    <Compile Include="BbEventArgs\SendFileEventArgs.cs" />
+    <Compile Include="BbEventArgs\ShareTextEventArgs.cs" />
+    <Compile Include="BbRemoteServer.cs" />
+    <Compile Include="BbRemoteServerHistory.cs" />
+    <Compile Include="BbEventArgs\ConnectionEventArgs.cs" />
+    <Compile Include="BbEventArgs\InputFeedbackEventArgs.cs" />
+    <Compile Include="BbEventArgs\ReceivedIconEventArgs.cs" />
+    <Compile Include="Converters\ConnectStatusToString.cs" />
+    <Compile Include="Converters\DiscoveredServerToTooltip.cs" />
+    <Compile Include="Converters\IntToFontsize.cs" />
+    <Compile Include="Converters\StringToFontFamily.cs" />
+    <Compile Include="Converters\IsConnectedServerToVisibility.cs" />
+    <Compile Include="Converters\IsDefaultServerToBool.cs" />
+    <Compile Include="Converters\NullToBool.cs" />
+    <Compile Include="Converters\ValidIPPortToBool.cs" />
+    <Compile Include="BbPasswordManager.cs" />
+    <Compile Include="Crypting\DHKeyExchange.cs" />
+    <Compile Include="Crypting\BbStreamCipher.cs" />
+    <Compile Include="Native\FolderBrowserDialog.cs" />
+    <Compile Include="Native\NativeMethods.cs" />
+    <Compile Include="SendFile.cs" />
+    <Compile Include="Converters\BatteryStatusToVisual.cs" />
+    <Compile Include="Converters\BoolToNotBool.cs" />
+    <Compile Include="Converters\BoolToVisiblity.cs" />
+    <Compile Include="LowResStopWatch.cs" />
+    <Compile Include="ReceiveFile.cs" />
+    <Compile Include="ReceiveFilesManager.cs" />
+    <Compile Include="SendFilesManager.cs" />
+    <Compile Include="BbServerConnection.cs" />
+    <Compile Include="SharedClipboard.cs" />
+    <Compile Include="TcpPackets\BbTcpPacket.cs" />
+    <Compile Include="TcpPackets\BbTcpPacket_Attach_Ans.cs" />
+    <Compile Include="TcpPackets\BbTcpPacket_Attach_Req.cs" />
+    <Compile Include="TcpPackets\BbTcpPacket_BatteryStatus.cs" />
+    <Compile Include="TcpPackets\BbTcpPacket_ClipboardContent.cs" />
+    <Compile Include="TcpPackets\BbTcpPacket_CommandSendFile.cs" />
+    <Compile Include="TcpPackets\BbTcpPacket_EncryptionACK.cs" />
+    <Compile Include="TcpPackets\BbTcpPacket_Encryption_AuthAns.cs" />
+    <Compile Include="TcpPackets\BbTcpPacket_Encryption_AuthReq.cs" />
+    <Compile Include="TcpPackets\BbTcpPacket_Fragment.cs" />
+    <Compile Include="TcpPackets\BbTcpPacket_Hello_Ans.cs" />
+    <Compile Include="TcpPackets\BbTcpPacket_Hello_Req.cs" />
+    <Compile Include="TcpPackets\BbTcpPacket_InputFocusChange.cs" />
+    <Compile Include="TcpPackets\BbTcpPacket_DoImeAction.cs" />
+    <Compile Include="TcpPackets\BbTcpPacket_OptionsChange.cs" />
+    <Compile Include="TcpPackets\BbTcpPacket_Ping.cs" />
+    <Compile Include="TcpPackets\BbTcpPacket_Pink_ACK.cs" />
+    <Compile Include="TcpPackets\BbTcpPacket_RemoveText.cs" />
+    <Compile Include="TcpPackets\BbTcpPacket_RequestIcon.cs" />
+    <Compile Include="TcpPackets\BbTcpPacket_SendFileData.cs" />
+    <Compile Include="TcpPackets\BbTcpPacket_SendIcon.cs" />
+    <Compile Include="TcpPackets\BbTcpPacket_SendKey.cs" />
+    <Compile Include="TcpPackets\BbTcpPacket_SendText.cs" />
+    <Compile Include="TcpPackets\BbTcpPacket_SetDisplayLock.cs" />
+    <Compile Include="TcpPackets\BbTcpPacket_ShareText.cs" />
+    <Compile Include="TcpPackets\BbTcpPacket_StartEncryption.cs" />
+    <Compile Include="TcpPackets\BbTcpPacket_StartSendFile.cs" />
+    <Compile Include="TcpPackets\BbTcpPacket_SwitchApp.cs" />
+    <Compile Include="TcpPackets\BbTcpPacket_TextSyncUpdate.cs" />
+    <Compile Include="UserControls\AboutControl.xaml.cs">
+      <DependentUpon>AboutControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\ConnectionSettingControl.xaml.cs">
+      <DependentUpon>ConnectionSettingControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\GeneralSettingsControl.xaml.cs">
+      <DependentUpon>GeneralSettingsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\InterfaceSettingsControl.xaml.cs">
+      <DependentUpon>InterfaceSettingsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\ManualConnectionControl.xaml.cs">
+      <DependentUpon>ManualConnectionControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\ScreenCapSettingControl.xaml.cs">
+      <DependentUpon>ScreenCapSettingControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\SettingsControl.xaml.cs">
+      <DependentUpon>SettingsControl.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Resources\FileFlyout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\FlipViewRessource.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BBProtocol.cs" />
+    <Compile Include="DiscoveredServerInfo.cs" />
+    <Compile Include="BbDiscoveryFinder.cs" />
+    <Compile Include="DiscoveryPackets\DiscoveryPacket.cs" />
+    <Compile Include="DiscoveryPackets\DiscoveryPacket_Answer.cs" />
+    <Compile Include="DiscoveryPackets\DiscoveryPacket_Request.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="Log.cs" />
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="Resources\Icons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\IconsNonShared.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\ListViewRessources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\StringResources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\AboutControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\ConnectionSettingControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\GeneralSettingsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\InterfaceSettingsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\ManualConnectionControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\ScreenCapSettingControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\SettingsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Resource Include="Resources\Entypo.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\WindowsIcons-license.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Entypo-license.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\android_default.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\splash.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="wireboard.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Resources\TextBoxRessource.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Fody.3.2.13\build\Fody.targets" Condition="Exists('..\packages\Fody.3.2.13\build\Fody.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Fody.3.2.13\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.3.2.13\build\Fody.targets'))" />
+    <Error Condition="!Exists('..\packages\Costura.Fody.3.1.6\build\Costura.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Costura.Fody.3.1.6\build\Costura.Fody.props'))" />
+  </Target>
+</Project>

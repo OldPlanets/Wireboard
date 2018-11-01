@@ -1,0 +1,82 @@
+﻿<UserControl x:Class="Wireboard.UserControls.ManualConnectionControl" Name="ucManualConnection"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             xmlns:converter="clr-namespace:Wireboard.Converters"
+             xmlns:p="clr-namespace:Wireboard.Properties"
+             xmlns:local="clr-namespace:Wireboard.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="500" IsVisibleChanged="ucManualConnection_IsVisibleChanged">
+    <UserControl.Resources>
+        <converter:BoolToVisiblity x:Key="boolToVisiblity"/>
+        <converter:ValidIPPortToBool x:Key="validIPToBool"/>
+    </UserControl.Resources>
+    <Grid DataContext="{Binding ElementName=ucManualConnection}" Margin="5,2,5,5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" VerticalAlignment="Top" TextWrapping="Wrap"><Run Text="Enter the IP Address of an Android device with "/><Run Text="{StaticResource AppName}"/><Run Text=" as active Keyboard to connect to to it."/></TextBlock>
+        <Grid Grid.Row="1" Margin="0,10,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="IP address" Margin="0,0,0,3" />
+            <TextBlock Grid.Row="0" Grid.Column="1" Text="Port"/>
+            <TextBox x:Name="tbIP" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" Margin="0,0,20,0" Height="27" PreviewKeyDown="tbIP_PreviewKeyDown" Text="{Binding Source={x:Static p:Settings.Default}, Path=ManualServerIP, Mode=TwoWay}"/>
+            <TextBox x:Name="tbPort" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Margin="0,0,20,0" Height="27" controls:TextBoxHelper.Watermark="7591" Text="{Binding Source={x:Static p:Settings.Default}, Path=ManualServerPort, Mode=TwoWay}"/>
+            <Button x:Name="buttonConnect" Grid.Row="1" Grid.Column="2" BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Top" Width="82" Height="27" Style="{DynamicResource SquareButtonStyle}" HorizontalContentAlignment="Stretch"
+                     Click="Button_Connect_Click">
+                <Button.IsEnabled>
+                    <MultiBinding Converter="{StaticResource validIPToBool}">
+                        <Binding Path="Text" ElementName="tbIP" Mode="OneWay" />
+                        <Binding Path="Text" ElementName="tbPort" Mode="OneWay" />
+                    </MultiBinding>
+                </Button.IsEnabled>
+                <Grid VerticalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <controls:ProgressRing IsActive="True" Height="14" Width="14" Visibility="{Binding Path=ServerConnection.IsConnecting, Converter={StaticResource boolToVisiblity}, ConverterParameter='Hidden'}"
+                                           Foreground="{DynamicResource IdealForegroundColorBrush}" Margin="0,0" Grid.Column="0"
+                                           IsLarge="False" HorizontalAlignment="Left" />
+                    <Rectangle Grid.Column="0" Width="14" Visibility="{Binding Path=ServerConnection.IsConnecting, Converter={StaticResource boolToVisiblity}, ConverterParameter='Invert'}"
+                   Height="14"
+                   Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" HorizontalAlignment="Left">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_lightning}" />
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                    <TextBlock Grid.Column="1" Margin="0"
+                   VerticalAlignment="Center"
+                   Text="Connect" HorizontalAlignment="Center" />
+                </Grid>
+            </Button>
+        </Grid>
+        <DockPanel Grid.Row="2" Margin="0,10,0,0" >
+            <Rectangle Width="20" x:Name="rectFailIcon" Visibility="Collapsed"
+                   Height="20" Margin="0,0,10,0" Fill="Red">
+                <Rectangle.OpacityMask>
+                    <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_close}" />
+                </Rectangle.OpacityMask>
+            </Rectangle>
+            <Rectangle Width="20" x:Name="rectOKIcon" Visibility="Collapsed"
+                   Height="20" Margin="0,0,10,0" Fill="LawnGreen">
+                <Rectangle.OpacityMask>
+                    <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_check}" />
+                </Rectangle.OpacityMask>
+            </Rectangle>
+            <TextBlock Grid.Row="2" x:Name="tbResultText" Visibility="Collapsed" Text="Failed to connect to device" VerticalAlignment="Center" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
+        </DockPanel>
+    </Grid>
+</UserControl>
