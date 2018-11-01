@@ -76,6 +76,7 @@ SectionIn RO
     
     ;Create shortcuts
     CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
+	CreateShortcut "$SMPROGRAMS\$StartMenuFolder\Wireboard.lnk" "$INSTDIR\Wireboard.exe"
     CreateShortcut "$SMPROGRAMS\$StartMenuFolder\Uninstall.lnk" "$INSTDIR\Uninstall.exe"
   
   !insertmacro MUI_STARTMENU_WRITE_END
@@ -105,7 +106,8 @@ Section "Uninstall"
   RMDir "$INSTDIR"
 
   !insertmacro MUI_STARTMENU_GETFOLDER Application $StartMenuFolder
-    
+  
+  Delete "$SMPROGRAMS\$StartMenuFolder\Wireboard.lnk"
   Delete "$SMPROGRAMS\$StartMenuFolder\Uninstall.lnk"
   RMDir "$SMPROGRAMS\$StartMenuFolder"
 
