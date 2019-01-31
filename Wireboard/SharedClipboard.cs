@@ -28,7 +28,14 @@ namespace Wireboard
         {
             if (Clipboard.ContainsText())
             {
-                m_strLastClipboardText = Clipboard.GetText();
+                try
+                {
+                    m_strLastClipboardText = Clipboard.GetText();
+                }
+                catch (Exception err)
+                {
+                    Log.e(TAG, "Error while opening clipboard: " + err.Message);
+                }
             }
             m_clipboardChangeTimer = new DispatcherTimer();
             m_clipboardChangeTimer.Tick += OnClipboardChangeTimer;
