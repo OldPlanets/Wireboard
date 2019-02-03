@@ -34,5 +34,6 @@ The usage should be pretty intuitive. Which is a bit of an excuse for me being t
 
 In the meantime here are some hints and tips, what you can do with Wireboard which you might not have noticed right away:
 * To send a file from your phone to your Windows client, use the "Share" functionality Android provides and select Wireboard as target. For example in the gallery, select one or multiple pictures, select "Share" from the menu and then click on the wireboard icon
+* The round button with the display in the Windows client let's yet set a remove a screen lock, meaning the display of your phone will stay turned on as long as you are connected or toggle the button
 * You can Drag(and drop) files into the Windows client to send them to your phone
 * Double clicking on the status bar in the Windows client will open the Log and Debug Log
