@@ -14,11 +14,12 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Cobalt.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
                 <ResourceDictionary Source="/Resources/Icons.xaml" />
-                <ResourceDictionary  Source="/Resources/FlipViewRessource.xaml" />
+                <ResourceDictionary Source="/Resources/FlipViewRessource.xaml" />
                 <ResourceDictionary Source="/Resources/StringResources.xaml" />
                 <ResourceDictionary Source="/Resources/FileFlyout.xaml" />
                 <ResourceDictionary Source="/Resources/ListViewRessources.xaml" />
-                <ResourceDictionary  Source="/Resources/TextBoxRessource.xaml" />
+                <ResourceDictionary Source="/Resources/TextBoxRessource.xaml" />
+                <ResourceDictionary Source="/Resources/ButtonRessources.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

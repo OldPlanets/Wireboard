@@ -16,6 +16,7 @@ using MahApps.Metro.Controls.Dialogs;
 using System.Windows.Data;
 using System.Threading.Tasks;
 using System.Windows.Threading;
+using Wireboard.UserControls;
 
 namespace Wireboard
 {
@@ -696,5 +697,15 @@ namespace Wireboard
             }
         }
 
+        private void EmojiPickerX_EmojiChosen(object sender, EventArgs e)
+        {
+            String strEmoji = ((EmojiPickerX)sender).Selection;
+            if (textRemoteField.IsEnabled && !textRemoteField.IsReadOnly && strEmoji.Length > 0)
+            {
+                textRemoteField.SelectedText = strEmoji;
+                textRemoteField.CaretIndex += strEmoji.Length;
+                textRemoteField.SelectionLength = 0;
+            }
+        }
     }
 }
