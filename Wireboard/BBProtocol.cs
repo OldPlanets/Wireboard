@@ -15,7 +15,7 @@ namespace Wireboard
 
         public const UInt16 DEFAULT_TCP_PORT = 7591;
         public const byte CURRENT_DISCOVERY_PROTOCOL_VERSION = 0x01;
-        public const byte CURRENT_PROTOCOL_VERSION = 0x01;
+        public const byte CURRENT_PROTOCOL_VERSION = 0x02;
         public const byte MIN_PROTOCOL_VERSION = 0x01;
         public const ushort DISCOVERYPORT = 52946;
 
@@ -67,6 +67,11 @@ namespace Wireboard
         public const byte OP_ENCRYPTIONACK = 0x31;
         public const byte OP_ENCRYPTIONAUTHREQ = 0x32;
         public const byte OP_ENCRYPTIONAUTHANS = 0x33;
+
+        public const byte OP_STARTCAPTURE = 0x40;
+        public const byte OP_CAPTURESTATE = 0x41;
+        public const byte OP_CAPTUREDATA = 0x42;
+        public const byte OP_STOPCAPTURE = 0x43;
 
 
 

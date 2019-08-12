@@ -258,6 +258,18 @@ namespace Wireboard.TcpPackets
                                 bbPingACK.ProcessData(data);
                                 return bbPingACK;
                             }
+                        case BBProtocol.OP_CAPTURESTATE:
+                            {
+                                BbTcpPacket_CaptureState bbCaptureState = new BbTcpPacket_CaptureState(this);
+                                bbCaptureState.ProcessData(data);
+                                return bbCaptureState;
+                            }
+                        case BBProtocol.OP_CAPTUREDATA:
+                            {
+                                BbTcpPacket_SendScreenCaptureData bbCaptureData = new BbTcpPacket_SendScreenCaptureData(this);
+                                bbCaptureData.ProcessData(data);
+                                return bbCaptureData;                            }
+
                         default:
                             {
                                 ParseError = "Opcode unsupported - " + Opcode;

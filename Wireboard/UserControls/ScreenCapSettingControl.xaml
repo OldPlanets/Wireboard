@@ -11,7 +11,6 @@
              " IsVisibleChanged="UserControl_IsVisibleChanged">
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
         <StackPanel Orientation="Vertical" Margin="5">
-            <CheckBox Content="Enable Screen Capture Support" IsChecked="{Binding Source={x:Static p:Settings.Default}, Path=ScreenCapSupportEnabled, Mode=TwoWay}" />
             <RichTextBox Grid.Column="1" BorderThickness="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center" IsDocumentEnabled="True" IsReadOnly="True" Margin="-5,0,0,10" Padding="0,1">
                 <FlowDocument>
                     <Paragraph TextAlignment="Left" Margin="0,0,0,0">
@@ -41,13 +40,13 @@
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <TextBox x:Name="tbDirectory" Grid.Column="0" MinWidth="80" Margin="0" Text="{Binding Source={x:Static p:Settings.Default}, Path=ADBPath, Mode=TwoWay}" VerticalAlignment="Center" IsEnabled="{Binding Source={x:Static p:Settings.Default}, Path=ScreenCapSupportEnabled, Mode=OneWay}" TextChanged="TextBox_TextChanged" controls:TextBoxHelper.AutoWatermark="True"/>
+                    <TextBox x:Name="tbDirectory" Grid.Column="0" MinWidth="80" Margin="0" Text="{Binding Source={x:Static p:Settings.Default}, Path=ADBPath, Mode=TwoWay}" VerticalAlignment="Center" TextChanged="TextBox_TextChanged" controls:TextBoxHelper.AutoWatermark="True"/>
                     <Button  Grid.Column="1" BorderThickness="1" HorizontalAlignment="Right" Margin="0" VerticalAlignment="Top" Width="Auto" Height="{Binding ElementName=tbDirectory, Path=ActualHeight}" Style="{DynamicResource SquareButtonStyle}" HorizontalContentAlignment="Stretch"
-                         IsEnabled="{Binding Source={x:Static p:Settings.Default}, Path=ScreenCapSupportEnabled, Mode=OneWay}" Click="ButtonBrowse_Click">
+                          Click="ButtonBrowse_Click">
                         <TextBlock Grid.Column="1" Margin="5,0" VerticalAlignment="Center" Text="Browse..." HorizontalAlignment="Center" />
                     </Button>
                     <Button Grid.Column="2" BorderThickness="1" HorizontalAlignment="Right" Margin="5,0,0,0" VerticalAlignment="Center" Width="Auto" Height="{Binding ElementName=tbDirectory, Path=ActualHeight}" Style="{DynamicResource SquareButtonStyle}" HorizontalContentAlignment="Stretch"
-                        IsEnabled="{Binding Source={x:Static p:Settings.Default}, Path=ScreenCapSupportEnabled, Mode=OneWay}" Click="ButtonTest_Click">
+                        Click="ButtonTest_Click">
                         <TextBlock Grid.Column="1" Margin="5,0" VerticalAlignment="Center" Text="Test" HorizontalAlignment="Center" />
                     </Button>
                 </Grid>
@@ -69,13 +68,13 @@
                 </DockPanel>
                 <TextBlock Text="Refresh interval:" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center"  Margin="0,5,10,0" />
                 <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Right">
-                    <TextBox  MinWidth="80" Margin="0,5,0,0" Text="{Binding Source={x:Static p:Settings.Default}, Path=ScreenCapRefresh, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Source={x:Static p:Settings.Default}, Path=ScreenCapSupportEnabled, Mode=OneWay}" />
+                    <TextBox  MinWidth="80" Margin="0,5,0,0" Text="{Binding Source={x:Static p:Settings.Default}, Path=ScreenCapRefresh, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     <TextBlock Text="ms" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center"  Margin="5,5,0,0" />
                 </StackPanel>
             </Grid>
-            <CheckBox Content="Pause when window is inactive" ToolTip="When the Wireboard window is not focused or minimized, screen capture will be stopped to reduce ressource usage" IsChecked="{Binding Source={x:Static p:Settings.Default}, Path=ScreenCapPauseOnInactive, Mode=TwoWay}" IsEnabled="{Binding Source={x:Static p:Settings.Default}, Path=ScreenCapSupportEnabled, Mode=OneWay}" Margin="0,5,0,0"/>
-            <CheckBox Content="Enable Tap support" ToolTip="A leftclick on the image will be sent as tap to the device. Gestures (swipe, drag) are not supported." Margin="0,5,0,0" IsChecked="{Binding Source={x:Static p:Settings.Default}, Path=ScreenCapEnableTap, Mode=TwoWay}" IsEnabled="{Binding Source={x:Static p:Settings.Default}, Path=ScreenCapSupportEnabled, Mode=OneWay}"/>
-            <CheckBox Content="Auto resize window on Screen Capture" Margin="0,5,0,0" IsChecked="{Binding Source={x:Static p:Settings.Default}, Path=ScreenCapResize, Mode=TwoWay}" IsEnabled="{Binding Source={x:Static p:Settings.Default}, Path=ScreenCapSupportEnabled}"/>
+            <CheckBox Content="Pause when window is inactive" ToolTip="When the Wireboard window is not focused or minimized, screen capture will be stopped to reduce ressource usage" IsChecked="{Binding Source={x:Static p:Settings.Default}, Path=ScreenCapPauseOnInactive, Mode=TwoWay}" Margin="0,5,0,0"/>
+            <CheckBox Content="Enable Tap support" ToolTip="A leftclick on the image will be sent as tap to the device. Gestures (swipe, drag) are not supported." Margin="0,5,0,0" IsChecked="{Binding Source={x:Static p:Settings.Default}, Path=ScreenCapEnableTap, Mode=TwoWay}" />
+            <CheckBox Content="Auto resize window on Screen Capture" Margin="0,5,0,0" IsChecked="{Binding Source={x:Static p:Settings.Default}, Path=ScreenCapResize, Mode=TwoWay}" />
 
         </StackPanel>
     </ScrollViewer>

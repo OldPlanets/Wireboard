@@ -17,6 +17,7 @@ using System.Windows.Data;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 using Wireboard.UserControls;
+using SimpleRtspPlayer.RawFramesDecoding.DecodedFrames;
 
 namespace Wireboard
 {
@@ -58,11 +59,14 @@ namespace Wireboard
         public AppIconManager AppIconManager => m_appIconManager;
         public BbBatteryStatus BatteryStatus { get; private set; } = new BbBatteryStatus();
         public AdbWrapper Adb { get; } = new AdbWrapper();
+        public IScreenCapture ScreenCapture { get; private set; }
 
         public MainWindow()
         {
             Loaded += WinMain_Loaded;
             ServerConnection = new BbServerConnection(this);
+            InitScreenCapture();
+
             InitializeComponent();
 
             Log.StatusChanged += OnStatusChanged;
@@ -74,8 +78,23 @@ namespace Wireboard
             ServerConnection.SoftwareUpdateRequired += OnSoftwareUpdateNeeded;
             Properties.Settings.Default.PropertyChanged += OnSettingsChanged;
             SharedClipboard.ClipboardChanged += OnClipboardChanged;
-
+            ServerConnection.ScreenCapture.ScreenCaptureCancelled += OnScreenCaptureCancelled;
+            
             SetActionButton(0);
+        }
+
+        private void InitScreenCapture()
+        {
+            if (Properties.Settings.Default.ScreenCapMethod == "2")
+            {
+                ScreenCapture = Adb;
+                Log.d(TAG, "Setting ADB for screen capture");
+            }
+            else
+            {
+                ScreenCapture = ServerConnection.ScreenCapture;
+                Log.d(TAG, "Setting android native for screen capture");
+            }
         }
 
         private async void WinMain_Loaded(object sender, EventArgs e)
@@ -92,6 +111,7 @@ namespace Wireboard
         private void WinMain_Closed(object sender, EventArgs e)
         {
             Properties.Settings.Default.Save();
+            ServerConnection.DisconnectAsync().Wait(1000);
         }
 
         public void OnInputFeedbackEvent(object sender, InputFeedbackEventArgs e)
@@ -399,10 +419,13 @@ namespace Wireboard
 
         public async void OnSettingsChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "ScreenCapSupportEnabled" && !Properties.Settings.Default.ScreenCapSupportEnabled)
-            {
-                await Adb.StopScreenCappingAsync();
+            if (e.PropertyName == "ScreenCapMethod")
+            {                
                 ScreenCapAdjustLayout(false);
+                IScreenCapture old = ScreenCapture;
+                InitScreenCapture();
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ScreenCapture"));
+                await old.StopScreenCappingAsync();
             }
             else if (e.PropertyName == "ScreenlockBright" && Properties.Settings.Default.PrefInitialDisplayLock)
             {
@@ -574,7 +597,7 @@ namespace Wireboard
                 else
                     fChatHeight = Math.Max(Properties.Settings.Default.LayoutScreenCapChatHeight, gridScreenCap.RowDefinitions[2].MinHeight);
 
-                MinHeight = 330;
+                MinHeight = 500;
                 gridSplitScreenCap.Visibility = Visibility.Visible;
                 gridScreenCap.RowDefinitions[0].MinHeight = 100;                
                 double fPictureHeight = gridScreenCap.ActualHeight - (fChatHeight + gridScreenCap.RowDefinitions[1].MinHeight);
@@ -613,21 +636,28 @@ namespace Wireboard
             Binding binding = BindingOperations.GetBinding(f, IsEnabledProperty);
             f.IsEnabled = false;
 
-            if (Adb.IsScreenCapActive)
+            if (ScreenCapture.IsScreenCapActive)
             {
-                await Adb.StopScreenCappingAsync();
+                await ScreenCapture.StopScreenCappingAsync();
                 ScreenCapAdjustLayout(false);
             }
             else
             {
                 Log.i(TAG, "Trying to start screen capture", true);
-                if (await Adb.StartScreenCappingAsync())
-                {
-                    Log.i(TAG, "Screen capture successfully started", true);
+                if (await ScreenCapture.StartScreenCappingAsync())
+                {                    
                     ScreenCapAdjustLayout(true);
                 }
             }
             f.SetBinding(IsEnabledProperty, binding);
+        }
+
+        public void OnScreenCaptureCancelled(object sender, EventArgs e)
+        {
+            if (sender == ScreenCapture && !ScreenCapture.IsScreenCapActive)
+            {
+                ScreenCapAdjustLayout(false);
+            }
         }
 
         private void GridScreenCap_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -644,7 +674,7 @@ namespace Wireboard
 
         private async void ScreenCapImage_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (Adb.IsScreenCapActive && !Adb.IsScreenCapOutOfDate && Properties.Settings.Default.ScreenCapEnableTap && Adb.CurrentScreenCap != null)
+            if (ScreenCapture == Adb && Adb.IsScreenCapActive && !Adb.IsScreenCapOutOfDate && Properties.Settings.Default.ScreenCapEnableTap && Adb.CurrentScreenCap != null)
             {
                 Image scImage = sender as Image;
                 if (scImage == null)
@@ -659,7 +689,7 @@ namespace Wireboard
 
         private async void ContextMenu_SaveScreenCap(object sender, RoutedEventArgs e)
         {
-            await Adb.SaveScreenCapAsync();
+            await ScreenCapture.SaveScreenCapAsync();
         }
 
         private async void OnSoftwareUpdateNeeded(object sender, EventArgs e)

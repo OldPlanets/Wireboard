@@ -29,6 +29,7 @@ namespace Wireboard
         public event EventHandler<ReceiveFileEventArgs> ReceivedFile;
         public event EventHandler<ShareTextEventArgs> ReceivedSharedText;
         public event EventHandler<SendFileEventArgs> ReceivedSendFileCommand;
+        public event EventHandler<ScreenCaptureStateEventArgs> ReceivedScreenCapture;
 
         private TcpClient m_tcpClient;
         private CancellationTokenSource m_CancelToken;
@@ -220,7 +221,7 @@ namespace Wireboard
                         {
                             if (newPacket is BbTcpPacket_Fragment)
                             {
-                                Log.d(TAG, "Fragment received");
+                                //Log.d(TAG, "Fragment received");
                                 BbTcpPacket_Fragment found = liFragments.Find(x => x.FragmentID == ((BbTcpPacket_Fragment)newPacket).FragmentID);
                                 if (found == null)
                                 {
@@ -232,7 +233,7 @@ namespace Wireboard
                                     liFragments.Remove(found);
                                     if (newPacket != null)
                                     {
-                                        Log.d(TAG, "Fragment completed from Opcode: " + newPacket.DbgGetOpcode());
+                                        //Log.d(TAG, "Fragment completed from Opcode: " + newPacket.DbgGetOpcode());
                                         m_receivedPackets.Post(newPacket);
                                     }
                                     else
@@ -381,6 +382,7 @@ namespace Wireboard
                     Log.w(TAG, "Server supported protocol versions incompatible - " + ServerName);
                     Disconnect(false, true);
                 }
+                SupportsScreenCapture = hello_ans.SupportsScreenCapture;
                 Log.d(TAG, "Received Hello Answer from " + ServerName + " Protocol Version: " + UsedProtocolVersion + " Needs Password: " + m_bRequiresPassword);
                 Attach();
             }
@@ -512,6 +514,18 @@ namespace Wireboard
             {
                 //Log.d(TAG, "Received Clipboard Packet, Text: " + clipboard.ContentPlainText);
                 ReceivedSharedText?.Invoke(this, new ShareTextEventArgs(clipboard.ContentPlainText, "", clipboard.ContentHtmlText, true));
+            }
+            else if (packet is BbTcpPacket_SendScreenCaptureData capturedata && Attached)
+            {
+                //Log.d(TAG, "Received Capture data Packet, Size " + packet.BodyLength);
+                ScreenCaptureStateEventArgs captureEventArgs = new ScreenCaptureStateEventArgs(capturedata.CaptureData);
+                ReceivedScreenCapture?.Invoke(this, captureEventArgs);
+            }
+            else if (packet is BbTcpPacket_CaptureState capturestate && Attached)
+            {
+                //Log.d(TAG, "Received Capture state Packet, Size " + packet.BodyLength);
+                ScreenCaptureStateEventArgs captureEventArgs = new ScreenCaptureStateEventArgs(capturestate.CaptureState);
+                ReceivedScreenCapture?.Invoke(this, captureEventArgs);
             }
             else
                 Log.w(TAG, "Received unhandled package, Opcode: " + packet.Opcode);
@@ -808,6 +822,18 @@ namespace Wireboard
         {
             if (Attached)
                 SendPacket(new BbTcpPacket_OptionsChange(UsedProtocolVersion, bNewMode));
+        }
+
+        public void SendStartCapture(byte byRequestedQuality)
+        {
+            if (Attached)
+                SendPacket(new BbTcpPacket_StartCapture(UsedProtocolVersion, byRequestedQuality));
+        }
+
+        public void SendStopCapture()
+        {
+            if (Attached)
+                SendPacket(new BbTcpPacket_StopCapture(UsedProtocolVersion));
         }
     }
 }

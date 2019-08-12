@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 
 namespace Wireboard
 {
-    public class AdbWrapper : INotifyPropertyChanged
+    public class AdbWrapper : IScreenCapture, INotifyPropertyChanged
     {
         protected static String TAG = typeof(AdbWrapper).Name;
 
@@ -42,6 +42,7 @@ namespace Wireboard
                 }
             }
         }
+        public bool IsShowing => IsScreenCapActive;
         private bool m_bIsScreenCapActive = false;
         public bool IsScreenCapActive
         {
@@ -50,8 +51,15 @@ namespace Wireboard
             {
                 m_bIsScreenCapActive = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsScreenCapActive"));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsShowing"));
             }
         }
+
+        public bool IsWaitingForPermission => false;
+        public bool CanCapture => true;
+        public bool CanTap => true;
+
+
         private LowResStopWatch m_swLastScreenCapUpdate = new LowResStopWatch(true);
         private bool m_bScreenCapFallbackMethod;
         public event PropertyChangedEventHandler PropertyChanged;
@@ -122,6 +130,7 @@ namespace Wireboard
                     }                        
                 }
             });
+            Log.i(TAG, "Screen capture successfully started", true);
             return true;
         }
 

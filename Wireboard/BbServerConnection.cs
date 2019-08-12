@@ -18,6 +18,7 @@ namespace Wireboard
 
         public ReceiveFilesManager ReceiveFilesManager { get; } = new ReceiveFilesManager();
         public SendFilesManager SendFilesManager { get; } = new SendFilesManager();
+        public AndroidScreenCapture ScreenCapture { get; } = new AndroidScreenCapture();
         public BbDiscoveryFinder DiscoveryFinder { get; set; } = new BbDiscoveryFinder();
         public BbRemoteServer CurrentServer;
         public BbRemoteServerHistory LastConnectedServer { get; private set; }
@@ -166,6 +167,7 @@ namespace Wireboard
             CurrentServer.ConnectionChanged += m_mainWin.AppIconManager.onConnectionEvent;
             CurrentServer.ConnectionChanged += ReceiveFilesManager.OnConnectionEvent;
             CurrentServer.ConnectionChanged += SendFilesManager.onConnectionEvent;
+            CurrentServer.ConnectionChanged += ScreenCapture.OnConnectionEvent;
             CurrentServer.ConnectionChanged += m_mainWin.OnConnectionEvent;
             CurrentServer.ReceivedInputFeedback += m_mainWin.OnInputFeedbackEvent;
             CurrentServer.ReceivedIcon += m_mainWin.AppIconManager.onReceivedIcon;

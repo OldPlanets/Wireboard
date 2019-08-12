@@ -1,0 +1,49 @@
+﻿<UserControl x:Class="Wireboard.UserControls.AndroidScreenCapSettingControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             xmlns:local="clr-namespace:Wireboard.UserControls"
+             mc:Ignorable="d"
+             xmlns:p="clr-namespace:Wireboard.Properties"
+             d:DesignHeight="300" d:DesignWidth="500">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Orientation="Vertical" Margin="5">
+            <RichTextBox Grid.Column="1" BorderThickness="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center" IsDocumentEnabled="True" IsReadOnly="True" Margin="-5,0,0,10" Padding="0,1">
+                <FlowDocument>
+                    <Paragraph TextAlignment="Left" Margin="0,0,0,0">
+                        <Run Text="Allows Screen Capturing over Wi-Fi without any additional setup. Requires Android Marshmallow or newer on the remote device."/>
+                    </Paragraph>
+                </FlowDocument>
+            </RichTextBox>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Image Quality:" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="0,5,10,0" />
+                <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Right">
+                    <controls:NumericUpDown x:Name="Test"
+                                        HasDecimals="False"
+                                        Maximum="100"
+                                        Minimum="10"
+                                        Interval="5"
+                                        MinWidth="95"
+                                        TextAlignment="Left"
+                                        Value="{Binding Source={x:Static p:Settings.Default}, Path=AndroidScreenCapQuality, Mode=TwoWay}"
+                                        StringFormat=" {0}%" />
+                </StackPanel>
+            </Grid>
+            <CheckBox Content="Auto resize window on Screen Capture" Margin="0,5,0,0" IsChecked="{Binding Source={x:Static p:Settings.Default}, Path=ScreenCapResize, Mode=TwoWay}" />
+
+        </StackPanel>
+    </ScrollViewer>
+
+</UserControl>

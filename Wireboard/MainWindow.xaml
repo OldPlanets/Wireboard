@@ -167,8 +167,7 @@
                     </Rectangle>
                 </ToggleButton>
                 <ToggleButton Margin="0,5" VerticalAlignment="Center" Width="40" Height="40" IsTabStop="False" Style="{DynamicResource MetroCircleToggleButtonStyle}" ToolTip="Screen Capture"
-                              Visibility="{Binding Source={x:Static p:Settings.Default}, Path=ScreenCapSupportEnabled, Mode=OneWay, Converter={StaticResource boolToVisiblity}}"
-                              IsEnabled="{Binding Path=ServerConnection.ConnectedToServer, Mode=OneWay}" IsChecked="{Binding Path=Adb.IsScreenCapActive, Mode=OneWay}"
+                              IsEnabled="{Binding Path=ScreenCapture.CanCapture, Mode=OneWay}" IsChecked="{Binding Path=ScreenCapture.IsScreenCapActive, Mode=OneWay}"
                               Focusable="{Binding Path=ServerConnection.ConnectedToServer, Mode=OneWay, Converter={StaticResource boolToNotBool}}" Click="ScreenCapButton_Click">
                     <Rectangle Grid.Column="0" Width="18"
                        Height="16"
@@ -209,7 +208,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*" MinHeight="50"/>
             </Grid.RowDefinitions>
-            <Border Grid.Row="0" BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,5,5,0">
+            <Border Grid.Row="0" BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,5,5,0" Visibility="{Binding  Path=ServerConnection.ScreenCapture.IsShowing, Mode=OneWay, Converter={StaticResource boolToVisiblity}}">
                 <Border.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Save" Click="ContextMenu_SaveScreenCap" />
@@ -220,19 +219,24 @@
                         <Style.Triggers>
                             <MultiDataTrigger>
                                 <MultiDataTrigger.Conditions>
-                                    <Condition Binding="{Binding Path=Adb.IsScreenCapOutOfDate}" Value="False" />
+                                    <Condition Binding="{Binding Path=ServerConnection.ScreenCapture.IsScreenCapOutOfDate}" Value="False" />
+                                    <Condition Binding="{Binding Path=ServerConnection.ScreenCapture.CanTap}" Value="True" />
                                     <Condition Binding="{Binding Source={x:Static p:Settings.Default}, Path=ScreenCapEnableTap}" Value="True"/>
                                 </MultiDataTrigger.Conditions>
                                 <Setter Property="Cursor" Value="Hand"/>
                             </MultiDataTrigger>
-                            <DataTrigger Binding="{Binding Path=Adb.IsScreenCapOutOfDate}" Value="True">
+                            <DataTrigger Binding="{Binding Path=ServerConnection.ScreenCapture.IsScreenCapOutOfDate}" Value="True">
                                 <Setter Property="Opacity" Value="0.6"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
                 </Border.Style>
-                <Image Source="{Binding Path=Adb.CurrentScreenCap}" RenderOptions.BitmapScalingMode="HighQuality" MouseLeftButtonUp="ScreenCapImage_MouseLeftButtonUp" />
+                <Grid>
+                    <Image Source="{Binding Path=Adb.CurrentScreenCap}" RenderOptions.BitmapScalingMode="HighQuality" MouseLeftButtonUp="ScreenCapImage_MouseLeftButtonUp" Visibility="Hidden" />
+                    <usercontrol:VideoView VideoSource="{Binding Path=ServerConnection.ScreenCapture}" VerticalAlignment="Center"   />
+                </Grid>
             </Border>
+            <TextBlock Text="Waiting for permission on Android device" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding  Path=ServerConnection.ScreenCapture.IsWaitingForPermission, Mode=OneWay, Converter={StaticResource boolToVisiblity}}" Foreground="{DynamicResource AccentColorBrush}" />
             <GridSplitter Visibility="Collapsed" x:Name="gridSplitScreenCap" Margin="0,5" Background="{DynamicResource AccentColorBrush}" Grid.Row="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalAlignment="Stretch" Height="5" ResizeDirection="Rows" />
             <TextBox Grid.Row="2" x:Name="textRemoteField" Margin="5,0" IsEnabled="False" TextWrapping="Wrap" HorizontalContentAlignment="Stretch" 
                      VerticalContentAlignment="Stretch" Focusable="True" IsTabStop="True" PreviewKeyDown="TextRemoteFied_PreviewKeyDown" AcceptsReturn="True" 

@@ -15,6 +15,7 @@ namespace Wireboard
         protected LowResStopWatch DisconnectedTime { get; set; } = new LowResStopWatch(false);
         protected bool ProtocolIncompatible { get; set; } = false;
         protected byte ServerMinProtocolVersion { get; set; } = 0;
+        public bool SupportsScreenCapture { get; protected set; } = false;
 
         private int m_nSessionID = 0;
         public int SessionID
@@ -58,6 +59,7 @@ namespace Wireboard
             ServerName = src.ServerName;
             ServerGUID = src.ServerGUID;
             ServerMinProtocolVersion = src.ServerMinProtocolVersion;
+            SupportsScreenCapture = src.SupportsScreenCapture;
         }
 
     }

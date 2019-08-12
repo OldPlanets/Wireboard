@@ -51,7 +51,28 @@
                 <usercontrol:InterfaceSettingsControl />
             </TabItem>
             <TabItem Visibility="Collapsed" Tag="4">
-                <usercontrol:ScreenCapSettingControl />
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,5,5,0" HorizontalAlignment="Right">
+                        <TextBlock Text="Method:" Margin="0,0,10,0" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                        <ComboBox x:Name="cbScreenCapMethodSelect" SelectedValuePath="Tag" Height="20" MinHeight="20" Width="80" SelectedValue="{Binding Source={x:Static p:Settings.Default}, Path=ScreenCapMethod}">
+                            <ComboBoxItem Tag="1">Native</ComboBoxItem>
+                            <ComboBoxItem Tag="2">ADB</ComboBoxItem>
+                        </ComboBox>
+                    </StackPanel>
+                    <TabControl Grid.Row="1" SelectedValuePath="Tag" SelectedValue="{Binding ElementName=cbScreenCapMethodSelect, Path=SelectedValue, Mode=OneWay}">
+                        <TabItem Visibility="Collapsed" Tag="1">
+                            <usercontrol:AndroidScreenCapSettingControl />
+                        </TabItem>
+                        <TabItem Visibility="Collapsed" Tag="2">
+                            <usercontrol:ScreenCapSettingControl />
+                        </TabItem>
+                    </TabControl>
+                </Grid>
+                
             </TabItem>
             <TabItem Visibility="Collapsed" Tag="5">
                 <usercontrol:AboutControl />

@@ -217,18 +217,6 @@ namespace Wireboard.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool ScreenCapSupportEnabled {
-            get {
-                return ((bool)(this["ScreenCapSupportEnabled"]));
-            }
-            set {
-                this["ScreenCapSupportEnabled"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool Reconnect {
             get {
@@ -265,7 +253,7 @@ namespace Wireboard.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool ScreenCapResize {
             get {
                 return ((bool)(this["ScreenCapResize"]));
@@ -356,6 +344,30 @@ namespace Wireboard.Properties {
             }
             set {
                 this["RecentEmojiList"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public string ScreenCapMethod {
+            get {
+                return ((string)(this["ScreenCapMethod"]));
+            }
+            set {
+                this["ScreenCapMethod"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        public int AndroidScreenCapQuality {
+            get {
+                return ((int)(this["AndroidScreenCapQuality"]));
+            }
+            set {
+                this["AndroidScreenCapQuality"] = value;
             }
         }
     }

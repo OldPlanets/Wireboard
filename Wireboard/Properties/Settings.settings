@@ -50,9 +50,6 @@
     <Setting Name="ScreenCapEnableTap" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="ScreenCapSupportEnabled" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
     <Setting Name="Reconnect" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
@@ -63,7 +60,7 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="ScreenCapResize" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="ScreenCapOnWinHeight" Type="System.Double" Scope="User">
       <Value Profile="(Default)">0</Value>
@@ -85,6 +82,12 @@
     </Setting>
     <Setting Name="RecentEmojiList" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="ScreenCapMethod" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="AndroidScreenCapQuality" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">100</Value>
     </Setting>
   </Settings>
 </SettingsFile>

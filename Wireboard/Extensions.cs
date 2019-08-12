@@ -107,6 +107,12 @@ namespace Wireboard
             return chosenValue;
         }
 
+        public static string ToMbitSpeed(this int value, int decimalPlaces = 2)
+        {
+            var asMbit = Math.Round((double)(value * 8) / 1000000, decimalPlaces);
+            return string.Format("{0}MBit", asMbit);
+        }
+
         public static void ColorLogText(this TextRange tr, Log.ESeverity severity)
         {
             if (severity == Log.ESeverity.ERROR)

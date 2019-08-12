@@ -14,6 +14,7 @@ namespace Wireboard.TcpPackets
         public bool RequiresPassword { get; private set; }
         public String Desc { get; private set; } = "";
         public int ServerGUID { get; private set; }
+        public bool SupportsScreenCapture { get; private set; }
 
         internal BbTcpPacket_Hello_Ans(BbTcpPacket src) : base(src)
         {
@@ -27,6 +28,12 @@ namespace Wireboard.TcpPackets
             RequiresPassword = data.ReadByte() > 0;
             Desc = BBProtocol.ReadString(data);
             ServerGUID = data.ReadInt32();
+
+            if (MaxSupportedVersion >= 2)
+            {
+                // [SupportsScreenCapture 1]
+                SupportsScreenCapture = data.ReadByte() > 0;
+            }
             IsValid = true;
         }
     }

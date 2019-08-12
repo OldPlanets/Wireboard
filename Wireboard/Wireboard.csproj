@@ -9,13 +9,14 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>Wireboard</RootNamespace>
     <AssemblyName>Wireboard</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -27,6 +28,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -56,6 +58,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Threading.Tasks.Dataflow, Version=4.5.24.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Tpl.Dataflow.4.5.24\lib\portable-net45+win8+wpa81\System.Threading.Tasks.Dataflow.dll</HintPath>
       <Private>True</Private>
@@ -96,6 +99,7 @@
     <Compile Include="BbEventArgs\ClipboardChangedEventArgs.cs" />
     <Compile Include="BbEventArgs\DiscoveryFinishedEventArgs.cs" />
     <Compile Include="BbEventArgs\ReceiveFileEventArgs.cs" />
+    <Compile Include="BbEventArgs\ScreenCaptureStateEventArgs.cs" />
     <Compile Include="BbEventArgs\SendFileEventArgs.cs" />
     <Compile Include="BbEventArgs\ShareTextEventArgs.cs" />
     <Compile Include="BbRemoteServer.cs" />
@@ -115,8 +119,54 @@
     <Compile Include="Crypting\DHKeyExchange.cs" />
     <Compile Include="Crypting\BbStreamCipher.cs" />
     <Compile Include="Emoji\Data.cs" />
+    <Compile Include="IScreenCapture.cs" />
     <Compile Include="Native\FolderBrowserDialog.cs" />
     <Compile Include="Native\NativeMethods.cs" />
+    <Compile Include="RtspClientSharp\Codecs\CodecInfo.cs" />
+    <Compile Include="RtspClientSharp\Codecs\Video\H264CodecInfo.cs" />
+    <Compile Include="RtspClientSharp\Codecs\Video\VideoCodecInfo.cs" />
+    <Compile Include="RtspClientSharp\GUI\ScreenInfo.cs" />
+    <Compile Include="RtspClientSharp\MediaParsers\H264Parser.cs" />
+    <Compile Include="RtspClientSharp\MediaParsers\H264ParserException.cs" />
+    <Compile Include="RtspClientSharp\MediaParsers\H264Slicer.cs" />
+    <Compile Include="RtspClientSharp\MediaParsers\H264VideoPayloadParser.cs" />
+    <Compile Include="RtspClientSharp\MediaParsers\IMediaPayloadParser.cs" />
+    <Compile Include="RtspClientSharp\MediaParsers\MediaPayloadParser.cs" />
+    <Compile Include="RtspClientSharp\MediaParsers\MediaPayloadParserException.cs" />
+    <Compile Include="RtspClientSharp\RawFramesDecoding\DecodedFrames\DecodedVideoFrame.cs" />
+    <Compile Include="RtspClientSharp\RawFramesDecoding\DecodedFrames\IDecodedVideoFrame.cs" />
+    <Compile Include="RtspClientSharp\RawFramesDecoding\DecodedVideoFrameParameters.cs" />
+    <Compile Include="RtspClientSharp\RawFramesDecoding\DecoderException.cs" />
+    <Compile Include="RtspClientSharp\RawFramesDecoding\FFmpeg\FFmpegDecodedVideoScaler.cs" />
+    <Compile Include="RtspClientSharp\RawFramesDecoding\FFmpeg\FFmpegVideoDecoder.cs" />
+    <Compile Include="RtspClientSharp\RawFramesDecoding\FFmpeg\FFmpegVideoPInvoke.cs" />
+    <Compile Include="RtspClientSharp\GUI\IVideoSource.cs" />
+    <Compile Include="RtspClientSharp\RawFramesDecoding\PixelFormat.cs" />
+    <Compile Include="RtspClientSharp\RawFramesDecoding\ScalingPolicy.cs" />
+    <Compile Include="RtspClientSharp\RawFramesDecoding\ScalingQuality.cs" />
+    <Compile Include="RtspClientSharp\RawFramesDecoding\TransformParameters.cs" />
+    <Compile Include="RtspClientSharp\RawFrames\FrameType.cs" />
+    <Compile Include="RtspClientSharp\RawFrames\RawFrame.cs" />
+    <Compile Include="RtspClientSharp\RawFrames\Video\RawH264Frame.cs" />
+    <Compile Include="RtspClientSharp\RawFrames\Video\RawH264IFrame.cs" />
+    <Compile Include="RtspClientSharp\RawFrames\Video\RawH264PFrame.cs" />
+    <Compile Include="RtspClientSharp\RawFrames\Video\RawVideoFrame.cs" />
+    <Compile Include="RtspClientSharp\Utils\ArraySegmentExtensions.cs" />
+    <Compile Include="RtspClientSharp\Utils\ArrayUtils.cs" />
+    <Compile Include="RtspClientSharp\Utils\BigEndianConverter.cs" />
+    <Compile Include="RtspClientSharp\Utils\BitStreamReader.cs" />
+    <Compile Include="RtspClientSharp\Utils\ChunksArray.cs" />
+    <Compile Include="RtspClientSharp\Utils\Delegates.cs" />
+    <Compile Include="RtspClientSharp\Utils\Hex.cs" />
+    <Compile Include="RtspClientSharp\Utils\NetworkClientFactory.cs" />
+    <Compile Include="RtspClientSharp\Utils\NetworkCredentialExtensions.cs" />
+    <Compile Include="RtspClientSharp\Utils\RandomGeneratorFactory.cs" />
+    <Compile Include="RtspClientSharp\Utils\SimpleHybridLock.cs" />
+    <Compile Include="RtspClientSharp\Utils\StreamExtensions.cs" />
+    <Compile Include="RtspClientSharp\Utils\SystemMemory.cs" />
+    <Compile Include="RtspClientSharp\Utils\TaskExtensions.cs" />
+    <Compile Include="RtspClientSharp\Utils\TimeUtils.cs" />
+    <Compile Include="AndroidScreenCapture.cs" />
     <Compile Include="SendFile.cs" />
     <Compile Include="Converters\BatteryStatusToVisual.cs" />
     <Compile Include="Converters\BoolToNotBool.cs" />
@@ -128,6 +178,7 @@
     <Compile Include="BbServerConnection.cs" />
     <Compile Include="SharedClipboard.cs" />
     <Compile Include="TcpPackets\BbTcpPacket.cs" />
+    <Compile Include="TcpPackets\BbTcpPacket_CaptureState.cs" />
     <Compile Include="TcpPackets\BbTcpPacket_Attach_Ans.cs" />
     <Compile Include="TcpPackets\BbTcpPacket_Attach_Req.cs" />
     <Compile Include="TcpPackets\BbTcpPacket_BatteryStatus.cs" />
@@ -146,13 +197,16 @@
     <Compile Include="TcpPackets\BbTcpPacket_Pink_ACK.cs" />
     <Compile Include="TcpPackets\BbTcpPacket_RemoveText.cs" />
     <Compile Include="TcpPackets\BbTcpPacket_RequestIcon.cs" />
+    <Compile Include="TcpPackets\BbTcpPacket_SendScreenCaptureData.cs" />
     <Compile Include="TcpPackets\BbTcpPacket_SendFileData.cs" />
     <Compile Include="TcpPackets\BbTcpPacket_SendIcon.cs" />
     <Compile Include="TcpPackets\BbTcpPacket_SendKey.cs" />
     <Compile Include="TcpPackets\BbTcpPacket_SendText.cs" />
     <Compile Include="TcpPackets\BbTcpPacket_SetDisplayLock.cs" />
     <Compile Include="TcpPackets\BbTcpPacket_ShareText.cs" />
+    <Compile Include="TcpPackets\BbTcpPacket_StopCapture.cs" />
     <Compile Include="TcpPackets\BbTcpPacket_StartEncryption.cs" />
+    <Compile Include="TcpPackets\BbTcpPacket_StartCapture.cs" />
     <Compile Include="TcpPackets\BbTcpPacket_StartSendFile.cs" />
     <Compile Include="TcpPackets\BbTcpPacket_SwitchApp.cs" />
     <Compile Include="TcpPackets\BbTcpPacket_TextSyncUpdate.cs" />
@@ -174,11 +228,17 @@
     <Compile Include="UserControls\ManualConnectionControl.xaml.cs">
       <DependentUpon>ManualConnectionControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\AndroidScreenCapSettingControl.xaml.cs">
+      <DependentUpon>AndroidScreenCapSettingControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\ScreenCapSettingControl.xaml.cs">
       <DependentUpon>ScreenCapSettingControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\SettingsControl.xaml.cs">
       <DependentUpon>SettingsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\VideoView.xaml.cs">
+      <DependentUpon>VideoView.xaml</DependentUpon>
     </Compile>
     <Page Include="Resources\ButtonRessources.xaml">
       <SubType>Designer</SubType>
@@ -252,11 +312,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UserControls\AndroidScreenCapSettingControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="UserControls\ScreenCapSettingControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\SettingsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\VideoView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -284,6 +352,8 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="RtspClientSharp\LICENSE.md" />
+    <None Include="RtspClientSharp\README.md" />
     <Resource Include="Resources\Entypo.ttf" />
   </ItemGroup>
   <ItemGroup>
@@ -312,8 +382,58 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\emojis.txt">
-	<LogicalName>emojis.txt</LogicalName>
+      <LogicalName>emojis.txt</LogicalName>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ffmpeg\x64\avcodec-58.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ffmpeg\x64\avdevice-58.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ffmpeg\x64\avfilter-7.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ffmpeg\x64\avformat-58.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ffmpeg\x64\avutil-56.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ffmpeg\x64\postproc-55.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ffmpeg\x64\swresample-3.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ffmpeg\x64\swscale-5.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ffmpeg\x86\avcodec-58.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ffmpeg\x86\avdevice-58.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ffmpeg\x86\avfilter-7.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ffmpeg\x86\avformat-58.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ffmpeg\x86\avutil-56.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ffmpeg\x86\postproc-55.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ffmpeg\x86\swresample-3.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ffmpeg\x86\swscale-5.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.3.2.13\build\Fody.targets" Condition="Exists('..\packages\Fody.3.2.13\build\Fody.targets')" />
