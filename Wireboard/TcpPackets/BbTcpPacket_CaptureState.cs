@@ -19,6 +19,7 @@ namespace Wireboard.TcpPackets
     class BbTcpPacket_CaptureState : BbTcpPacket
     {
         public ECaptureState CaptureState { get; private set; }
+        public int ErrorCode { get; private set; }
 
         internal BbTcpPacket_CaptureState(BbTcpPacket src) : base(src)
         {
@@ -26,8 +27,9 @@ namespace Wireboard.TcpPackets
 
         internal void ProcessData(BinaryReader data)
         {
-            // [CaptureState 1]
+            // [CaptureState 1][ErrorCode 4]
             CaptureState = (ECaptureState)data.ReadByte();
+            ErrorCode = data.ReadInt32();
             IsValid = true;
         }
     }

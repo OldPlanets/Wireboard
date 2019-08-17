@@ -59,6 +59,7 @@ namespace Wireboard
                 return m_nTransferRate / 5;
             }
         }
+        private bool m_bDidCaptureDuringConnection;
     
 
         public event EventHandler<IDecodedVideoFrame> FrameReceived;
@@ -74,7 +75,7 @@ namespace Wireboard
                 if (m_state != value)
                 {
                     m_state = value;
-                    String[] aStrChanged = new String[] { "IsScreenCapActive", "IsShowing", "IsWaitingForPermission" };
+                    String[] aStrChanged = new String[] { "IsScreenCapActive", "IsShowing", "IsWaitingForPermission", "CanCapture" };
                     foreach (String s in aStrChanged)
                         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(s));
                 }
@@ -87,7 +88,7 @@ namespace Wireboard
         public bool IsScreenCapPaused => false;
         public bool IsScreenCapOutOfDate => false;
         public bool CanTap => false;
-        public bool CanCapture => m_captureServer != null && m_captureServer.Attached && m_captureServer.SupportsScreenCapture;
+        public bool CanCapture => m_captureServer != null && m_captureServer.Attached && m_captureServer.SupportsScreenCapture && (m_captureServer.IsProVersion || !m_bDidCaptureDuringConnection || State != EState.NONE);
 
         private void DecodeTask()
         {
@@ -203,6 +204,7 @@ namespace Wireboard
             {
                 StopCapture(false, true);
                 m_captureServer = null;
+                m_bDidCaptureDuringConnection = false;
             }
             else if (eventArgs.NewState == ConnectionEventArgs.EState.CONNECTED)
             {
@@ -230,8 +232,9 @@ namespace Wireboard
                 if ((State == EState.WAITING_FOR_PERMISSION || State == EState.REQUESTED) && eventArgs.CaptureState == ECaptureState.STARTING)
                 {
                     Log.i(TAG, "Screen capture successfully started", true);
+                    m_bDidCaptureDuringConnection = true;
                     State = EState.ACTIVE;
-                    DbgShowTransferRateAsync();
+                    //DbgShowTransferRateAsync();
                     m_decodeTask = StartDecoder();
                 }
                 else if (State == EState.REQUESTED && eventArgs.CaptureState == ECaptureState.WAITINGFORPERMISSION)
@@ -241,7 +244,13 @@ namespace Wireboard
                 }
                 else if (State != EState.NONE && eventArgs.CaptureState == ECaptureState.ERROR)
                 {
-                    Log.i(TAG, "Screen capture failed due to an error on the Android device", true);
+                    if (eventArgs.ErrorCode == BBProtocol.CAPTURE_ERRORCDOE_TRIALOVER)
+                        Log.i(TAG, "Screen capture ended due to time limit of the free version", true);
+                    else if (eventArgs.ErrorCode == BBProtocol.CAPTURE_ERRORCDOE_TRIALNOTALLOWED)
+                        Log.i(TAG, "The free version of Wireboard allows only one screen capture per connection", true);
+                    else
+                        Log.i(TAG, "Screen capture failed due to an error on the Android device", true);
+
                     StopCapture(false, true);
                 }
                 else if (State != EState.NONE && eventArgs.CaptureState == ECaptureState.PERMISSIONDENIED)

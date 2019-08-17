@@ -15,6 +15,7 @@ namespace Wireboard.TcpPackets
         public String Desc { get; private set; } = "";
         public int ServerGUID { get; private set; }
         public bool SupportsScreenCapture { get; private set; }
+        public bool IsProVersion { get; private set; }
 
         internal BbTcpPacket_Hello_Ans(BbTcpPacket src) : base(src)
         {
@@ -31,8 +32,9 @@ namespace Wireboard.TcpPackets
 
             if (MaxSupportedVersion >= 2)
             {
-                // [SupportsScreenCapture 1]
+                // [SupportsScreenCapture 1][ProVersion 1]
                 SupportsScreenCapture = data.ReadByte() > 0;
+                IsProVersion = data.ReadByte() > 0;
             }
             IsValid = true;
         }

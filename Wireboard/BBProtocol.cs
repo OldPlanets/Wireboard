@@ -32,6 +32,9 @@ namespace Wireboard
         public const ushort MAX_DISCPACKETSIZE_WITHOUTHEADER = Int16.MaxValue - DISCOVERY_HEADERSIZE;
         public const uint MAX_STRINGSIZE = 256 * 1024;
 
+        public const int CAPTURE_ERRORCDOE_TRIALOVER = 4000;
+        public const int CAPTURE_ERRORCDOE_TRIALNOTALLOWED = 4001;
+
         public const byte OP_DISCOVERY_REQUEST = 0x01;
         public const byte OP_DISCOVERY_ANSWER = 0x02;
 

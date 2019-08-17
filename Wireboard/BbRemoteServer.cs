@@ -41,6 +41,7 @@ namespace Wireboard
         private Task m_startUpTask;
         private bool m_bShutDown = false;
         public byte UsedProtocolVersion { get; private set; } = 0;
+        public bool InterpretesCtrlToggle => UsedProtocolVersion >= 2;
 
         private DHKeyExchange m_dhKeyExchange;
         private readonly BbStreamCipher m_sendStreamCipher = new BbStreamCipher();
@@ -383,6 +384,7 @@ namespace Wireboard
                     Disconnect(false, true);
                 }
                 SupportsScreenCapture = hello_ans.SupportsScreenCapture;
+                IsProVersion = hello_ans.IsProVersion;
                 Log.d(TAG, "Received Hello Answer from " + ServerName + " Protocol Version: " + UsedProtocolVersion + " Needs Password: " + m_bRequiresPassword);
                 Attach();
             }
@@ -524,7 +526,7 @@ namespace Wireboard
             else if (packet is BbTcpPacket_CaptureState capturestate && Attached)
             {
                 //Log.d(TAG, "Received Capture state Packet, Size " + packet.BodyLength);
-                ScreenCaptureStateEventArgs captureEventArgs = new ScreenCaptureStateEventArgs(capturestate.CaptureState);
+                ScreenCaptureStateEventArgs captureEventArgs = new ScreenCaptureStateEventArgs(capturestate.CaptureState, capturestate.ErrorCode);
                 ReceivedScreenCapture?.Invoke(this, captureEventArgs);
             }
             else

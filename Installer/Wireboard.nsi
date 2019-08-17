@@ -65,6 +65,9 @@ SectionIn RO
   ;ADD YOUR OWN FILES HERE...
   File "..\Wireboard\bin\Release\Wireboard.exe"
   File "License.txt"
+ 
+  SetOutPath "$INSTDIR\ffmpeg\x86"
+  File "..\Wireboard\bin\Release\ffmpeg\x86\*.dll"
 
   ;Store installation folder
   WriteRegStr HKLM "Software\Wireboard" "" $INSTDIR
@@ -102,7 +105,12 @@ Section "Uninstall"
   ;ADD YOUR OWN FILES HERE...
 
   Delete "$INSTDIR\Uninstall.exe"
+  Delete "$INSTDIR\Wireboard.exe"
+  Delete "$INSTDIR\License.txt"
+  Delete "$INSTDIR\ffmpeg\x86\*.dll"
 
+  RMDir "$INSTDIR\ffmpeg\x86"
+  RMDir "$INSTDIR\ffmpeg"
   RMDir "$INSTDIR"
 
   !insertmacro MUI_STARTMENU_GETFOLDER Application $StartMenuFolder

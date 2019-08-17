@@ -27,7 +27,7 @@ namespace Wireboard.TcpPackets
             m_nFragmentNumber = data.ReadInt32();
             m_nTotalFragmentsCount = data.ReadInt32();
             m_byPayloadOpcode = data.ReadByte();
-            Log.d(TAG, $"Received Fragment, ID: {FragmentID}, Total: {m_nTotalFragmentsCount}, Part: {m_nFragmentNumber}, PayloadOp: {m_byPayloadOpcode}");
+            //Log.d(TAG, $"Received Fragment, ID: {FragmentID}, Total: {m_nTotalFragmentsCount}, Part: {m_nFragmentNumber}, PayloadOp: {m_byPayloadOpcode}");
             m_bbData = (MemoryStream)data.BaseStream;
             if (m_nTotalFragmentsCount <= 1 || m_nFragmentNumber >= m_nTotalFragmentsCount)
             {

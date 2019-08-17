@@ -13,7 +13,7 @@
             <RichTextBox Grid.Column="1" BorderThickness="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center" IsDocumentEnabled="True" IsReadOnly="True" Margin="-5,0,0,10" Padding="0,1">
                 <FlowDocument>
                     <Paragraph TextAlignment="Left" Margin="0,0,0,0">
-                        <Run Text="Allows Screen Capturing over Wi-Fi without any additional setup. Requires Android Marshmallow or newer on the remote device."/>
+                        <Run Text="Allows Screen Capturing over Wi-Fi without any additional setup. Requires Wireboard Pro and Android Marshmallow or newer on the remote device."/>
                     </Paragraph>
                 </FlowDocument>
             </RichTextBox>

@@ -65,9 +65,11 @@ namespace Wireboard
         {
             Loaded += WinMain_Loaded;
             ServerConnection = new BbServerConnection(this);
-            InitScreenCapture();
+
+            ScreenCapture = ServerConnection.ScreenCapture;
 
             InitializeComponent();
+            InitScreenCapture();
 
             Log.StatusChanged += OnStatusChanged;
             Log.LogAdded += OnLogAdded;
@@ -88,13 +90,18 @@ namespace Wireboard
             if (Properties.Settings.Default.ScreenCapMethod == "2")
             {
                 ScreenCapture = Adb;
+                adbScreenCapElement.Visibility = Visibility.Visible;
+                androidScreenCapElement.Visibility = Visibility.Collapsed;
                 Log.d(TAG, "Setting ADB for screen capture");
             }
             else
             {
                 ScreenCapture = ServerConnection.ScreenCapture;
+                adbScreenCapElement.Visibility = Visibility.Collapsed;
+                androidScreenCapElement.Visibility = Visibility.Visible;
                 Log.d(TAG, "Setting android native for screen capture");
             }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ScreenCapture"));
         }
 
         private async void WinMain_Loaded(object sender, EventArgs e)
@@ -273,6 +280,26 @@ namespace Wireboard
                     }
                     else
                         e.Handled = (sender != textRemoteField);
+
+                    // ctrl modifier => toggle between new line and execute action, but only for protocolversion >= 2 since the client needs to interprete it the same way
+                    if (sender == textRemoteField && ServerConnection.CurrentServer.InterpretesCtrlToggle && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
+                    {
+                        if (e.Handled)
+                        {
+                            // ctrl + enter doesn't actually do anything on a textbox, so rather than just not handling it we need to modify it ourself
+                            ListenToTextChanges = false;
+                            var nIdx = textRemoteField.CaretIndex;
+                            textRemoteField.Text = textRemoteField.Text.Insert(nIdx, "\r\n"); // don't use Enviroment constants, our protocol is expecting this for a new line
+                            textRemoteField.CaretIndex = nIdx + 1;
+                            ListenToTextChanges = true;
+                            Log.d(TAG, "Toggle to false");
+                        }
+                        else if (!e.Handled && (m_nCurrentImeOptions & BBProtocol.IME_MASK_ACTION) != BBProtocol.IME_ACTION_NONE)
+                        {
+                            e.Handled = true;
+                            Log.d(TAG, "Toggle to true");
+                        }
+                    }
                     break;
                 case Key.Space:
                     bSend = (sender != textRemoteField);
@@ -424,7 +451,6 @@ namespace Wireboard
                 ScreenCapAdjustLayout(false);
                 IScreenCapture old = ScreenCapture;
                 InitScreenCapture();
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ScreenCapture"));
                 await old.StopScreenCappingAsync();
             }
             else if (e.PropertyName == "ScreenlockBright" && Properties.Settings.Default.PrefInitialDisplayLock)
@@ -597,7 +623,7 @@ namespace Wireboard
                 else
                     fChatHeight = Math.Max(Properties.Settings.Default.LayoutScreenCapChatHeight, gridScreenCap.RowDefinitions[2].MinHeight);
 
-                MinHeight = 500;
+                MinHeight = 600;
                 gridSplitScreenCap.Visibility = Visibility.Visible;
                 gridScreenCap.RowDefinitions[0].MinHeight = 100;                
                 double fPictureHeight = gridScreenCap.ActualHeight - (fChatHeight + gridScreenCap.RowDefinitions[1].MinHeight);
@@ -643,6 +669,17 @@ namespace Wireboard
             }
             else
             {
+                if (ScreenCapture is AndroidScreenCapture && ServerConnection.CurrentServer != null && !ServerConnection.CurrentServer.IsProVersion)
+                {
+                    var mySettings = new MetroDialogSettings()
+                    {
+                        AffirmativeButtonText = "Continue",
+                        ColorScheme = MetroDialogColorScheme.Accented
+                    };
+                    MessageDialogResult result = await this.ShowMessageAsync((string)Application.Current.FindResource("AppName") + " Pro Feature", "This feature requires the connected client to be the Pro version of " + (string)Application.Current.FindResource("AppName")
+                        + " and will be limited to 30 seconds per connection to allow testing.\nYou can upgrade to " + (string)Application.Current.FindResource("AppName") + " Pro by going into the settings of your Android client and select \"Pro Version\".",
+                        MessageDialogStyle.Affirmative, mySettings);
+                }
                 Log.i(TAG, "Trying to start screen capture", true);
                 if (await ScreenCapture.StartScreenCappingAsync())
                 {                    

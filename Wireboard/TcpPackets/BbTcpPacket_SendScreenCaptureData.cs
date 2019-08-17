@@ -11,6 +11,8 @@ namespace Wireboard.TcpPackets
     class BbTcpPacket_SendScreenCaptureData : BbTcpPacket
     {
         public MemoryStream CaptureData { get; private set; }
+        public bool IsIFrame { get; private set; }
+        public int FramesDropped { get; private set; }
 
 
         internal BbTcpPacket_SendScreenCaptureData(BbTcpPacket src) : base(src)
@@ -19,7 +21,9 @@ namespace Wireboard.TcpPackets
 
         internal void ProcessData(BinaryReader data)
         {
-            // [Data];
+            // // [IFrame 1][DroppedFrames 2][Data]
+            IsIFrame = data.ReadByte() > 0;
+            FramesDropped = data.ReadUInt16();
             CaptureData = (MemoryStream)data.BaseStream;
             IsValid = true;
         }

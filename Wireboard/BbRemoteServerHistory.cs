@@ -16,6 +16,7 @@ namespace Wireboard
         protected bool ProtocolIncompatible { get; set; } = false;
         protected byte ServerMinProtocolVersion { get; set; } = 0;
         public bool SupportsScreenCapture { get; protected set; } = false;
+        public bool IsProVersion { get; protected set; } = false;
 
         private int m_nSessionID = 0;
         public int SessionID
@@ -60,6 +61,7 @@ namespace Wireboard
             ServerGUID = src.ServerGUID;
             ServerMinProtocolVersion = src.ServerMinProtocolVersion;
             SupportsScreenCapture = src.SupportsScreenCapture;
+            IsProVersion = src.IsProVersion;
         }
 
     }

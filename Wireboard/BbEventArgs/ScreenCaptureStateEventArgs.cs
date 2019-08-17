@@ -13,11 +13,13 @@ namespace Wireboard.BbEventArgs
         public ECaptureState CaptureState { get; }
         public bool HasNewData { get; } = false;
         public bool HasNewState { get; } = false;
+        public int ErrorCode { get; } = 0;
         public MemoryStream Data { get; }
 
-        public ScreenCaptureStateEventArgs(ECaptureState eCaptureState)
+        public ScreenCaptureStateEventArgs(ECaptureState eCaptureState, int nErrorCode)
         {
             CaptureState = eCaptureState;
+            ErrorCode = nErrorCode;
             HasNewState = true;
         }
 

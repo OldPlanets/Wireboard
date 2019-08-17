@@ -50,7 +50,6 @@ namespace Wireboard.UserControls
         private async void ButtonTest_Click(object sender, RoutedEventArgs e)
         {
             FrameworkElement feSender = (FrameworkElement)sender;
-            Binding binding = BindingOperations.GetBinding(feSender, IsEnabledProperty);
             feSender.IsEnabled = false;
             tbDirectory.IsReadOnly = true;
             tbResultText.Visibility = Visibility.Collapsed;
@@ -68,7 +67,6 @@ namespace Wireboard.UserControls
             progressRingTest.Visibility = Visibility.Collapsed;
             tbDirectory.IsReadOnly = false;
             feSender.IsEnabled = true;
-            feSender.SetBinding(IsEnabledProperty, binding);
         }
 
         private async Task<Tuple<bool, String>> CheckAdbAsync()

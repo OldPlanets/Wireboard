@@ -208,7 +208,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*" MinHeight="50"/>
             </Grid.RowDefinitions>
-            <Border Grid.Row="0" BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,5,5,0" Visibility="{Binding  Path=ServerConnection.ScreenCapture.IsShowing, Mode=OneWay, Converter={StaticResource boolToVisiblity}}">
+            <Border Grid.Row="0" BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,5,5,0" Visibility="{Binding  Path=ScreenCapture.IsShowing, Mode=OneWay, Converter={StaticResource boolToVisiblity}}">
                 <Border.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Save" Click="ContextMenu_SaveScreenCap" />
@@ -232,8 +232,8 @@
                     </Style>
                 </Border.Style>
                 <Grid>
-                    <Image Source="{Binding Path=Adb.CurrentScreenCap}" RenderOptions.BitmapScalingMode="HighQuality" MouseLeftButtonUp="ScreenCapImage_MouseLeftButtonUp" Visibility="Hidden" />
-                    <usercontrol:VideoView VideoSource="{Binding Path=ServerConnection.ScreenCapture}" VerticalAlignment="Center"   />
+                    <Image x:Name="adbScreenCapElement" Source="{Binding Path=Adb.CurrentScreenCap}" RenderOptions.BitmapScalingMode="HighQuality" MouseLeftButtonUp="ScreenCapImage_MouseLeftButtonUp" Visibility="Collapsed" />
+                    <usercontrol:VideoView x:Name="androidScreenCapElement" VideoSource="{Binding Path=ServerConnection.ScreenCapture}" VerticalAlignment="Center"   />
                 </Grid>
             </Border>
             <TextBlock Text="Waiting for permission on Android device" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding  Path=ServerConnection.ScreenCapture.IsWaitingForPermission, Mode=OneWay, Converter={StaticResource boolToVisiblity}}" Foreground="{DynamicResource AccentColorBrush}" />
