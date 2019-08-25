@@ -38,7 +38,6 @@ InstallDirRegKey HKLM "Software\Wireboard" "Install_Dir"
   !insertmacro MUI_PAGE_LICENSE "License.txt"
   !insertmacro MUI_PAGE_COMPONENTS
   !insertmacro MUI_PAGE_DIRECTORY
-  !insertmacro MUI_PAGE_INSTFILES
 
   ;Start Menu Folder Page Configuration
   !define MUI_STARTMENUPAGE_REGISTRY_ROOT "HKLM" 
@@ -46,6 +45,8 @@ InstallDirRegKey HKLM "Software\Wireboard" "Install_Dir"
   !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME "Start Menu Folder"
   
   !insertmacro MUI_PAGE_STARTMENU Application $StartMenuFolder
+
+  !insertmacro MUI_PAGE_INSTFILES
   
   !insertmacro MUI_UNPAGE_CONFIRM
   !insertmacro MUI_UNPAGE_INSTFILES
@@ -78,6 +79,7 @@ SectionIn RO
   !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
     
     ;Create shortcuts
+    SetShellVarContext all
     CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
 	CreateShortcut "$SMPROGRAMS\$StartMenuFolder\Wireboard.lnk" "$INSTDIR\Wireboard.exe"
     CreateShortcut "$SMPROGRAMS\$StartMenuFolder\Uninstall.lnk" "$INSTDIR\Uninstall.exe"
@@ -114,7 +116,7 @@ Section "Uninstall"
   RMDir "$INSTDIR"
 
   !insertmacro MUI_STARTMENU_GETFOLDER Application $StartMenuFolder
-  
+  SetShellVarContext all
   Delete "$SMPROGRAMS\$StartMenuFolder\Wireboard.lnk"
   Delete "$SMPROGRAMS\$StartMenuFolder\Uninstall.lnk"
   RMDir "$SMPROGRAMS\$StartMenuFolder"
